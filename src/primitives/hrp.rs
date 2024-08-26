@@ -53,6 +53,10 @@ define_hrp_const! {
     /// The human-readable part used when running a Bitcoin regtest network.
     pub const BCRT 4 [98, 99, 114, 116];
 }
+define_hrp_const! {
+    /// The human-readable part used for the "ccc" network.
+    pub const CCC 3 [99, 99, 99, 0];
+}
 
 /// The human-readable part (human readable prefix before the '1' separator).
 #[derive(Clone, Copy, Debug)]
@@ -198,7 +202,7 @@ impl Hrp {
     /// [BIP-173]: <https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#user-content-Segwit_address_format>
     #[inline]
     pub fn is_valid_segwit(&self) -> bool {
-        self.is_valid_on_mainnet() || self.is_valid_on_testnet()
+        self.is_valid_on_mainnet() || self.is_valid_on_testnet() || self.is_valid_on_canary_cat_coin()
     }
 
     /// Returns `true` if this HRP is valid on the Bitcoin network i.e., HRP is "bc".
@@ -216,6 +220,10 @@ impl Hrp {
     /// Returns `true` if this HRP is valid on the Bitcoin regtest network i.e., HRP is "bcrt".
     #[inline]
     pub fn is_valid_on_regtest(&self) -> bool { *self == self::BCRT }
+
+    /// Returns `true` if this HRP is valid on the Canary Cat Coin network i.e., HRP is "ccc".
+    #[inline]
+    pub fn is_valid_on_canary_cat_coin(&self) -> bool { *self == self::CCC }
 }
 
 /// Displays the human-readable part.
@@ -519,10 +527,11 @@ mod tests {
     #[cfg(feature = "alloc")]
     #[test]
     fn hrp_consts() {
-        use crate::primitives::hrp::{BC, BCRT, TB};
+        use crate::primitives::hrp::{BC, BCRT, CCC, TB};
         assert_eq!(BC, Hrp::parse_unchecked("bc"));
         assert_eq!(TB, Hrp::parse_unchecked("tb"));
         assert_eq!(BCRT, Hrp::parse_unchecked("bcrt"));
+        assert_eq!(CCC, Hrp::parse_unchecked("ccc"));
     }
 
     #[test]

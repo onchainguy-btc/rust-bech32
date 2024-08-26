@@ -1212,6 +1212,16 @@ mod tests {
         }
     }
 
+    #[test]
+    fn canary_cat_coin_valid_addresses() {
+        let addresses = vec![
+            "ccc1pqeecmasm0s0mce2pa0090svfun476an9r758wt8lg7p06xge2ljqhujv07",
+        ];
+        for valid in addresses {
+            assert!(CheckedHrpstring::new::<Bech32m>(valid).is_ok())
+        }
+    }
+
     macro_rules! check_invalid_segwit_addresses {
         ($($test_name:ident, $reason:literal, $address:literal);* $(;)?) => {
             $(
